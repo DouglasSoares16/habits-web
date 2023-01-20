@@ -1,5 +1,7 @@
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { Check } from "phosphor-react";
+import { useState } from "react";
+import { api } from "../lib/axios";
 
 const availableWeekDays = [
   "Domingo",
@@ -12,8 +14,38 @@ const availableWeekDays = [
 ];
 
 export function NewHabitForm() {
+  const [title, setTitle] = useState("");
+  const [weekDays, setWeekDays] = useState<number[]>([]);
+
+  async function createNewHabit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!title || weekDays.length === 0) return;
+
+    await api.post("/habits", {
+      title,
+      weekDays,
+    });
+
+    setTitle("");
+    setWeekDays([]);
+
+    alert("Hábito criado com sucesso");
+  }
+
+  function handleToggleWeekDay(weekDay: number) {
+    if (weekDays.includes(weekDay)) {
+      const newWeekDays = weekDays.filter((day) => day !== weekDay);
+
+      setWeekDays(newWeekDays);
+    }
+    else {
+      setWeekDays((prevState) => [...prevState, weekDay]);
+    }
+  }
+
   return (
-    <form className="w-full flex flex-col mt-6">
+    <form onSubmit={(event) => createNewHabit(event)} className="w-full flex flex-col mt-6">
       <label htmlFor="title" className="font-semibold leading-tight">
         Qual seu comprometimento?
       </label>
@@ -23,6 +55,8 @@ export function NewHabitForm() {
         type="text"
         id="title"
         placeholder="ex.: exercícios, dormir bem, etc..."
+        onChange={(e) => setTitle(e.target.value)}
+        value={title}
         autoFocus
       />
 
@@ -33,7 +67,12 @@ export function NewHabitForm() {
       <div className="flex flex-col gap-2 mt-3">
         {
           availableWeekDays.map((day, i) => (
-            <Checkbox.Root key={`${day}-${i}`} className="flex items-center gap-3 group">
+            <Checkbox.Root
+              key={`${day}-${i}`}
+              className="flex items-center gap-3 group"
+              onCheckedChange={() => handleToggleWeekDay(i)}
+              checked={weekDays.includes(i)}
+            >
               <div className="
                 h-8 
                 w-8 
