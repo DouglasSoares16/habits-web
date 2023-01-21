@@ -51,7 +51,19 @@ export function NewHabitForm() {
       </label>
 
       <input
-        className="p-4 rounded-lg mt-3 bg-zinc-800 text-white placeholder:text-zinc-400"
+        className="
+          p-4 
+          rounded-lg 
+          mt-3 
+          bg-zinc-800 
+          text-white 
+          placeholder:text-zinc-400
+          focus:outline-none
+          focus:ring-2
+          focus:ring-violet-600
+          focus:ring-offset-2
+          focus:ring-offset-zinc-900
+        "
         type="text"
         id="title"
         placeholder="ex.: exercícios, dormir bem, etc..."
@@ -69,7 +81,7 @@ export function NewHabitForm() {
           availableWeekDays.map((day, i) => (
             <Checkbox.Root
               key={`${day}-${i}`}
-              className="flex items-center gap-3 group"
+              className="flex items-center gap-3 group focus:outline-none"
               onCheckedChange={() => handleToggleWeekDay(i)}
               checked={weekDays.includes(i)}
             >
@@ -81,10 +93,16 @@ export function NewHabitForm() {
                 items-center 
                 justify-center 
                 bg-zinc-900 
-                border-2 
+                border-2
                 border-zinc-800 
                 group-data-[state=checked]:bg-green-500 
                 group-data-[state=checked]:border-green-500
+                transition-colors
+                group-focus:outline-none
+                group-focus:ring-2
+                group-focus:ring-violet-600
+                group-focus:ring-offset-2
+                group-focus:ring-offset-background
               ">
                 <Checkbox.Indicator>
                   <Check size={20} className="text-white" />
@@ -112,6 +130,12 @@ export function NewHabitForm() {
           font-semibold 
           bg-green-600
           hover:bg-green-500
+          transition-colors
+          focus:outline-none
+          focus:ring-2
+          focus:ring-green-600
+          focus:ring-offset-2
+          focus:ring-offset-zinc-900
         ">
         <Check size={20} weight="bold" />
         Confirmar
